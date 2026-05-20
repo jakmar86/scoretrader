@@ -126,7 +126,10 @@ def run_model(home_team: str, away_team: str, df: pd.DataFrame,
         away_defence = away["defence"],
     )
 
-    return top_scores(matrix, n=n)
+    scores = top_scores(matrix, n=n)
+    for s in scores:
+        s["model_prob"] = s["prob"]
+    return scores
 
 
 if __name__ == "__main__":
