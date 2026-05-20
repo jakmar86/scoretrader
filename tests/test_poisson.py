@@ -21,7 +21,13 @@ def test_top_scores_sorted():
     assert probs == sorted(probs, reverse=True)
 
 
-def test_home_advantage():
+def test_home_advantage_increases_home_win_probability():
+    """Higher home advantage should increase total probability of all home win scores."""
     low  = score_probability(1.2, 1.0, 1.0, 1.0, 1.0)
     high = score_probability(1.2, 1.0, 1.0, 1.0, 1.3)
-    assert high[1][0] > low[1][0]
+    # Sum all home win scorelines (i > j)
+    low_home_win  = sum(low[i][j]  for i in range(low.shape[0])
+                                   for j in range(low.shape[1]) if i > j)
+    high_home_win = sum(high[i][j] for i in range(high.shape[0])
+                                   for j in range(high.shape[1]) if i > j)
+    assert high_home_win > low_home_win
